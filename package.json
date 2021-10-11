@@ -7,8 +7,7 @@
   },
   "homepage": "https://github.com/frida/gumjs-punycode",
   "main": "punycode.js",
-  "jsnext:main": "punycode.es6.js",
-  "module": "punycode.es6.js",
+  "type": "module",
   "keywords": [
     "punycode",
     "unicode",

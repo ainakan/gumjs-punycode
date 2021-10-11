@@ -96,7 +96,7 @@ function mapDomain(string, fn) {
  * @param {String} string The Unicode input string (UCS-2).
  * @returns {Array} The new array of code points.
  */
-function ucs2decode(string) {
+export function ucs2decode(string) {
 	const output = [];
 	let counter = 0;
 	const length = string.length;
@@ -128,7 +128,9 @@ function ucs2decode(string) {
  * @param {Array} codePoints The array of numeric code points.
  * @returns {String} The new Unicode string (UCS-2).
  */
-const ucs2encode = array => String.fromCodePoint(...array);
+export function ucs2encode(array) {
+	return String.fromCodePoint(...array);
+}
 
 /**
  * Converts a basic code point into a digit/integer.
@@ -191,7 +193,7 @@ const adapt = function(delta, numPoints, firstTime) {
  * @param {String} input The Punycode string of ASCII-only symbols.
  * @returns {String} The resulting string of Unicode symbols.
  */
-const decode = function(input) {
+export function decode(input) {
 	// Don't use UCS-2.
 	const output = [];
 	const inputLength = input.length;
@@ -273,7 +275,7 @@ const decode = function(input) {
 	}
 
 	return String.fromCodePoint(...output);
-};
+}
 
 /**
  * Converts a string of Unicode symbols (e.g. a domain name label) to a
@@ -282,7 +284,7 @@ const decode = function(input) {
  * @param {String} input The string of Unicode symbols.
  * @returns {String} The resulting Punycode string of ASCII-only symbols.
  */
-const encode = function(input) {
+export function encode(input) {
 	const output = [];
 
 	// Convert the input in UCS-2 to an array of Unicode code points.
@@ -368,7 +370,7 @@ const encode = function(input) {
 
 	}
 	return output.join('');
-};
+}
 
 /**
  * Converts a Punycode string representing a domain name or an email address
@@ -381,13 +383,13 @@ const encode = function(input) {
  * @returns {String} The Unicode representation of the given Punycode
  * string.
  */
-const toUnicode = function(input) {
+export function toUnicode(input) {
 	return mapDomain(input, function(string) {
 		return regexPunycode.test(string)
 			? decode(string.slice(4).toLowerCase())
 			: string;
 	});
-};
+}
 
 /**
  * Converts a Unicode string representing a domain name or an email address to
@@ -400,18 +402,15 @@ const toUnicode = function(input) {
  * @returns {String} The Punycode representation of the given domain name or
  * email address.
  */
-const toASCII = function(input) {
+export function toASCII(input) {
 	return mapDomain(input, function(string) {
 		return regexNonASCII.test(string)
 			? 'xn--' + encode(string)
 			: string;
 	});
-};
+}
 
-/*--------------------------------------------------------------------------*/
-
-/** Define the public API */
-const punycode = {
+export default {
 	/**
 	 * A string representing the current Punycode.js version number.
 	 * @memberOf punycode
@@ -434,5 +433,3 @@ const punycode = {
 	'toASCII': toASCII,
 	'toUnicode': toUnicode
 };
-
-module.exports = punycode;
